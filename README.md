@@ -1,113 +1,129 @@
 # MyToken (MTK)
 
 ## Overview
-MyToken is an ERC-20 compatible cryptocurrency token built on Ethereum using Solidity.  
-This project demonstrates how tokens work, how balances are stored, how transfer operations function, and how approvals and allowances operate in real ERC-20 systems.
-
-The smart contract was deployed and tested using Remix IDE.
+MyToken is an ERC-20 compatible token built on Ethereum for learning purposes.  
+It demonstrates token transfers, approvals, allowances, and event logging.
 
 ---
 
 ## Token Details
-Name: MyToken  
-Symbol: MTK  
-Decimals: 18  
-Total Supply: 1,000,000 MTK  
+- **Name:** MyToken  
+- **Symbol:** MTK  
+- **Decimals:** 18  
+- **Total Supply:** 1,000,000 MTK  
 
 ---
 
 ## Features
-- Standard ERC-20 implementation  
-- Transfer tokens between addresses  
-- Approve another address to spend tokens  
-- Spend approved tokens using transferFrom  
-- Logs Transfer & Approval events  
-- Uses mapping for balance and allowance storage  
+- ERC-20 standard functions  
+- Transfer tokens  
+- Approve spending  
+- Spend via transferFrom  
+- Emits Transfer & Approval events  
+- Uses mappings for balances & allowances  
 
 ---
 
-# How to Deploy (Remix IDE)
+# 🔧 How to Deploy (Remix IDE)
 
 1. Open Remix IDE  
-2. Create a file named MyToken.sol  
-3. Paste the ERC-20 contract code  
-4. Go to the Solidity Compiler (0.8.x) and click Compile  
-5. Go to Deploy & Run Transactions  
-6. Select environment: Remix VM (Prague)  
-7. Enter constructor value: 1000000  
-8. Click Deploy  
+2. Create file: `MyToken.sol`  
+3. Paste the ERC-20 code  
+4. Compile using Solidity 0.8.x  
+5. Go to Deploy & Run  
+6. Environment: **Remix VM (Prague)**  
+7. Enter constructor value: **1000000**  
+8. Click **Deploy**  
 
-Your token is now deployed.
-
----
-
-# How to Use the Token
-
-Below is the complete explanation of each ERC-20 function with examples.
+Your token is deployed.
 
 ---
 
-# 1. Check Balance  
-## Function: balanceOf(address account)
+# 📘 How to Use the Token  
+Below are **separate clean blocks** explaining each ERC-20 function:
 
-```solidity
-balanceOf(address account)
-This function returns the number of tokens a wallet owns.
-Example:
+---
+
+# 1️⃣ Check Balance  
+### Function: `balanceOf(address account)`
+
+Returns how many tokens an address owns.
+
+#### Example
+
 balanceOf(0x5B38...) → 1000000
-Meaning the address holds 1,000,000 MTK.
-If an address has never received tokens, it returns 0.
-Balances are stored as:
-mapping(address => uint256) public balanceOf;
-Use this after transfers to confirm updated balances.
----
-#2. Transfer Tokens
-##Function: transfer(address to, uint256 amount)
-```solidity
-transfer(address to, uint256 amount)
-This sends tokens from the sender’s account to another address.
-Example:
-transfer(0xAb84..., 100)
-Result:
-Sender balance: minus 100
-Receiver balance: plus 100
-A Transfer event is logged
-Important:
-Transfer will fail if:
-Sender does not have enough balance
-Receiver is the zero address (0x000...0000)
 
-#3. Approve Spending
-##Function: approve(address spender, uint256 amount)
-approve(address spender, uint256 amount)
-This lets another address spend some of your tokens.
-Example:
+2️⃣ Transfer Tokens
+Function: transfer(address to, uint256 amount)
+
+Sends tokens from the sender to another address.
+
+Example
+transfer(0xAb84..., 100)
+
+Result
+
+Sender balance → decreases by 100
+
+Receiver balance → increases by 100
+
+A Transfer event is emitted
+
+Transfer will fail if:
+
+Sender does not have enough balance
+
+Receiver is the zero address
+
+3️⃣ Approve Spending
+Function: approve(address spender, uint256 amount)
+
+Lets another address spend up to a specified number of tokens from your wallet.
+
+Example
 approve(0xAb84..., 50)
+
+
 Meaning:
-Spender can spend up to 50 MTK from your wallet
-They cannot spend more than 50
-They cannot spend without approval
-Allowances are stored as:
+The spender can spend 50 MTK on your behalf.
+
+Allowances stored as:
+
 mapping(address => mapping(address => uint256)) public allowance;
-Example:
+
+Example check:
 allowance(Owner, Spender) → 50
 
-#4. Spend Approved Tokens
-##Function: transferFrom(address from, address to, uint256 amount)
-transferFrom(address from, address to, uint256 amount)
-This lets the spender transfer tokens from the owner’s wallet to another address, using approved allowance.
-Example (after approve):
-Owner runs:
+4️⃣ Spend Approved Tokens
+Function: transferFrom(address from, address to, uint256 amount)
+
+Allows the spender to transfer tokens from the owner using the approved amount.
+
+Example Workflow
+
+Owner approves:
+
 approve(Spender, 50)
-Then Spender runs:
+
+
+Spender transfers:
+
 transferFrom(Owner, Receiver, 20)
-Result:
-Owner: -20 tokens
-Receiver: +20 tokens
-Allowance: 50 → 30
-Transfer event is logged
-transferFrom fails if:
+
+Result
+
+Owner balance → decreases by 20
+
+Receiver balance → increases by 20
+
+Allowance → 50 → 30
+
+A Transfer event is emitted
+
+transferFrom will fail if:
+
 Allowance < amount
+
 Owner does not have enough balance
 
-This is how exchanges and DeFi apps move tokens on behalf of users.
+This is how exchanges and DeFi apps move tokens automatically.
