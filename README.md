@@ -60,9 +60,10 @@ If an address has never received tokens, it returns 0.
 Balances are stored as:
 mapping(address => uint256) public balanceOf;
 Use this after transfers to confirm updated balances.
-
+---
 #2. Transfer Tokens
 ##Function: transfer(address to, uint256 amount)
+```solidity
 transfer(address to, uint256 amount)
 This sends tokens from the sender’s account to another address.
 Example:
