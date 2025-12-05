@@ -1,120 +1,113 @@
-# First-ERC-20-Token-on-Ethereum
+# MyToken (MTK)
 
-1. Introduction
-This project demonstrates the creation and testing of a custom ERC-20 token using Solidity and Remix IDE.
-The token supports all essential ERC-20 functions:
+## Overview
+MyToken is an ERC-20 compatible cryptocurrency token built on Ethereum using Solidity.  
+This project demonstrates how tokens work, how balances are stored, how transfer operations function, and how approvals and allowances operate in real ERC-20 systems.
 
-totalSupply
+The smart contract was deployed and tested using Remix IDE.
 
-balanceOf
+---
 
-transfer
+## Token Details
+Name: MyToken  
+Symbol: MTK  
+Decimals: 18  
+Total Supply: 1,000,000 MTK  
 
-approve
+---
 
-allowance
+## Features
+- Standard ERC-20 implementation  
+- Transfer tokens between addresses  
+- Approve another address to spend tokens  
+- Spend approved tokens using transferFrom  
+- Logs Transfer & Approval events  
+- Uses mapping for balance and allowance storage  
 
-transferFrom
+---
 
-All tests were performed using Remix VM (Prague).
+# How to Deploy (Remix IDE)
 
-2. Token Details
-Property	Value
-Name	MyToken
-Symbol	MTK
-Decimals	18
-Total Supply	1,000,000 MTK
-Network	Remix VM
+1. Open Remix IDE  
+2. Create a file named MyToken.sol  
+3. Paste the ERC-20 contract code  
+4. Go to the Solidity Compiler (0.8.x) and click Compile  
+5. Go to Deploy & Run Transactions  
+6. Select environment: Remix VM (Prague)  
+7. Enter constructor value: 1000000  
+8. Click Deploy  
 
-4. Project Files
+Your token is now deployed.
 
-├── MyToken.sol        # ERC-20 Contract
-├── README.md          # Documentation
-└── screenshots/       # All required screenshots
+---
 
-5. How to Compile
-Open Remix IDE
+# How to Use the Token
 
-Create file MyToken.sol
+Below is the complete explanation of each ERC-20 function with examples.
 
-Paste contract code
+---
 
-Select compiler version 0.8.x
+# 1. Check Balance  
+## Function: balanceOf(address account)
 
-Click Compile MyToken.sol
+```solidity
+balanceOf(address account)
+This function returns the number of tokens a wallet owns.
+Example:
+balanceOf(0x5B38...) → 1000000
+Meaning the address holds 1,000,000 MTK.
+If an address has never received tokens, it returns 0.
+Balances are stored as:
+mapping(address => uint256) public balanceOf;
+Use this after transfers to confirm updated balances.
 
-5. How to Deploy
-Go to Deploy & Run Transactions
+2. Transfer Tokens
+Function: transfer(address to, uint256 amount)
+transfer(address to, uint256 amount)
+This sends tokens from the sender’s account to another address.
+Example:
+transfer(0xAb84..., 100)
+Result:
+Sender balance: minus 100
+Receiver balance: plus 100
+A Transfer event is logged
+Important:
+Transfer will fail if:
+Sender does not have enough balance
+Receiver is the zero address (0x000...0000)
 
-Choose environment Remix VM (Prague)
+3. Approve Spending
+Function: approve(address spender, uint256 amount)
+approve(address spender, uint256 amount)
+This lets another address spend some of your tokens.
+Example:
+approve(0xAb84..., 50)
+Meaning:
+Spender can spend up to 50 MTK from your wallet
+They cannot spend more than 50
+They cannot spend without approval
+Allowances are stored as:
+mapping(address => mapping(address => uint256)) public allowance;
+Example:
+allowance(Owner, Spender) → 50
 
-Select contract MyToken
+4. Spend Approved Tokens
+Function: transferFrom(address from, address to, uint256 amount)
+transferFrom(address from, address to, uint256 amount)
+This lets the spender transfer tokens from the owner’s wallet to another address, using approved allowance.
+Example (after approve):
+Owner runs:
+approve(Spender, 50)
+Then Spender runs:
+transferFrom(Owner, Receiver, 20)
+Result:
+Owner: -20 tokens
+Receiver: +20 tokens
+Allowance: 50 → 30
+Transfer event is logged
+transferFrom fails if:
+Allowance < amount
+Owner does not have enough balance
 
-Enter constructor value:
-
-1000000
-
-Click Deploy
-
-6. Functional Testing
-✔ Transfer Test
-
-Sent tokens between accounts using:
-
-transfer(to, value)
-
-
-Balances updated correctly.
-
-(Screenshot in /screenshots)
-
-✔ Approve Test
-approve(spender, 50)
-
-
-Allowance correctly set to 50.
-
-(Screenshot in /screenshots)
-
-✔ transferFrom Test
-transferFrom(owner, receiver, 20)
-
-
-Spender successfully transferred 20 tokens on behalf of the owner.
-Allowance reduced from 50 → 30.
-
-(Screenshot in /screenshots)
-
-7. Edge Case Testing
-Test	Result
-Transfer to zero address	❌ Failed (correct behavior)
-Transfer more than balance	❌ Failed (correct)
-transferFrom without approval	❌ Failed (correct)
-
-(Screenshots in /screenshots)
-
-8. Events Generated
-
-The following events were successfully emitted:
-
-Transfer
-
-Approval
-
-(Screenshot in /screenshots)
-
-9. Conclusion
-
-This project fulfills all requirements for building and testing an ERC-20 token, including:
-
-Contract creation
-
-Deployment
-
-Token transfers
-
-Spending authorization (approve + transferFrom)
-
-Handling error cases correctly
-
-Documenting results with screenshots
+This is how exchanges, DeFi apps, and automated smart contracts manage user funds.
+This is how exchanges and DeFi apps move tokens on behalf of users.
