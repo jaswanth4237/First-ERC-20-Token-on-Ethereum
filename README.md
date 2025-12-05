@@ -61,8 +61,8 @@ Balances are stored as:
 mapping(address => uint256) public balanceOf;
 Use this after transfers to confirm updated balances.
 
-2. Transfer Tokens
-Function: transfer(address to, uint256 amount)
+#2. Transfer Tokens
+##Function: transfer(address to, uint256 amount)
 transfer(address to, uint256 amount)
 This sends tokens from the sender’s account to another address.
 Example:
@@ -76,8 +76,8 @@ Transfer will fail if:
 Sender does not have enough balance
 Receiver is the zero address (0x000...0000)
 
-3. Approve Spending
-Function: approve(address spender, uint256 amount)
+#3. Approve Spending
+##Function: approve(address spender, uint256 amount)
 approve(address spender, uint256 amount)
 This lets another address spend some of your tokens.
 Example:
@@ -91,8 +91,8 @@ mapping(address => mapping(address => uint256)) public allowance;
 Example:
 allowance(Owner, Spender) → 50
 
-4. Spend Approved Tokens
-Function: transferFrom(address from, address to, uint256 amount)
+#4. Spend Approved Tokens
+##Function: transferFrom(address from, address to, uint256 amount)
 transferFrom(address from, address to, uint256 amount)
 This lets the spender transfer tokens from the owner’s wallet to another address, using approved allowance.
 Example (after approve):
@@ -109,5 +109,4 @@ transferFrom fails if:
 Allowance < amount
 Owner does not have enough balance
 
-This is how exchanges, DeFi apps, and automated smart contracts manage user funds.
 This is how exchanges and DeFi apps move tokens on behalf of users.
