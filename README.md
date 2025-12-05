@@ -27,6 +27,7 @@ Total Supply	1,000,000 MTK
 Network	Remix VM
 
 4. Project Files
+
 ├── MyToken.sol        # ERC-20 Contract
 ├── README.md          # Documentation
 └── screenshots/       # All required screenshots
